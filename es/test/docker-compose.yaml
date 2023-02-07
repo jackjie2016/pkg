@@ -75,6 +75,7 @@ services:
       - ${ES_PORT}:9200
     environment:
       - node.name=es01
+      -  node.attr.hotwarm_type=hot
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es02,es03
@@ -91,6 +92,7 @@ services:
       - xpack.security.transport.ssl.certificate=certs/es01/es01.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.monitoring.collection.enabled=true
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${MEM_LIMIT}
     ulimits:
@@ -118,6 +120,7 @@ services:
       - ./plugins02:/usr/share/elasticsearch/plugins
     environment:
       - node.name=es02
+      - node.attr.hotwarm_type=warm
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es03
@@ -133,6 +136,7 @@ services:
       - xpack.security.transport.ssl.certificate=certs/es02/es02.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.monitoring.collection.enabled=true
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${MEM_LIMIT}
     ulimits:
@@ -160,6 +164,7 @@ services:
       - ./plugins03:/usr/share/elasticsearch/plugins
     environment:
       - node.name=es03
+      - node.attr.hotwarm_type=cold
       - cluster.name=${CLUSTER_NAME}
       - cluster.initial_master_nodes=es01,es02,es03
       - discovery.seed_hosts=es01,es02
@@ -175,6 +180,7 @@ services:
       - xpack.security.transport.ssl.certificate=certs/es03/es03.crt
       - xpack.security.transport.ssl.certificate_authorities=certs/ca/ca.crt
       - xpack.security.transport.ssl.verification_mode=certificate
+      - xpack.monitoring.collection.enabled=true
       - xpack.license.self_generated.type=${LICENSE}
     mem_limit: ${MEM_LIMIT}
     ulimits:
@@ -191,7 +197,28 @@ services:
       timeout: 100s
       retries: 120
 #    restart: always
-
+  elasticsearch-exporter:
+    depends_on:
+      es01:
+        condition: service_healthy
+      es02:
+        condition: service_started
+      es03:
+        condition: service_started
+    image: bitnami/elasticsearch-exporter:latest
+    command:
+      - '--es.uri:http://elasticsearch:9200'
+    restart: always
+    ports:
+      - "9114:9114"
+  elasticsearch_exporter:
+    image: justwatch/elasticsearch_exporter:1.0.2
+    container_name: monitor_elasticsearch_exporter
+    command:
+      - '-es.uri=http://10.16.48.44:9200'
+    restart: always
+    ports:
+      - 9108:9108
   kibana:
     depends_on:
       es01:

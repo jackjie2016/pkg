@@ -2,8 +2,11 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"gitee.com/phper95/pkg/es"
+	"github.com/olivere/elastic/v7"
 	"strconv"
+	"time"
 )
 
 const IndexName = "goods"
@@ -77,48 +80,47 @@ func main() {
 		Favorites:      1939,
 	}
 	id := strconv.FormatInt(doc.Id, 10)
-	err = esClient.Create(ctx, IndexName, id, "", doc)
-	if err != nil {
-		es.EStdLogger.Print(err)
-	}
+	//err = esClient.Create(ctx, IndexName, id, "", doc)
+	//if err != nil {
+	//	es.EStdLogger.Print(err)
+	//}
 	//err := esClient.Update(ctx, IndexName, id, "", map[string]interface{}{"name": "name2"})
 	//if err != nil {
 	//	es.EStdLogger.Print(err)
 	//}
 	//doc.Name = "name4"
-	//err := esClient.UpsertWithVersion(ctx, IndexName, id, "", doc, 3)
+	//err = esClient.UpsertWithVersion(ctx, IndexName, id, "", doc, 3)
 	//if err != nil {
 	//	es.EStdLogger.Print(err)
 	//}
 
-	//err = esClient.Upsert(ctx, IndexName, id, "", map[string]interface{}{"name": "name4"}, doc)
-	//if err != nil {
-	//	es.EStdLogger.Print(err)
-	//}
+	err = esClient.Upsert(ctx, IndexName, id, "", map[string]interface{}{"name": "name4"}, doc)
+	if err != nil {
+		es.EStdLogger.Print(err)
+	}
 	//err = esClient.DeleteWithVersion(ctx, IndexName, id, "", 5)
 	//if err != nil {
 	//	es.EStdLogger.Print(err)
 	//}
-	/*
-			for i := 0; i < 10; i++ {
-				docID := strconv.Itoa(i)
-				//update := map[string]interface{}{"name": "xxx"}
-				doc := Goods{
-					Id:             int64(i),
-					Name:           "name" + docID,
-					Price:          float64(i),
-					Year:           2022,
-					LastMonthSales: i,
-					Favorites:      i,
-				}
-				//esClient.BulkUpsert(IndexName, docID, docID, update, doc)
-				//esClient.BulkCreate(IndexName, docID, docID, doc)
-				esClient.BulkReplace(IndexName, docID, docID, doc)
-			}
 
-		//因为是异步处理，这里需要等待本地channel提交
-		time.Sleep(3 * time.Second)
-	*/
+	for i := 0; i < 10; i++ {
+		docID := strconv.Itoa(i)
+		//update := map[string]interface{}{"name": "xxx"}
+		doc := Goods{
+			Id:             int64(i),
+			Name:           "name" + docID,
+			Price:          float64(i),
+			Year:           2022,
+			LastMonthSales: i,
+			Favorites:      i,
+		}
+		//esClient.BulkUpsert(IndexName, docID, docID, update, doc)
+		esClient.BulkCreate(IndexName, docID, docID, doc)
+		//esClient.BulkReplace(IndexName, docID, docID, doc)
+	}
+
+	//因为是异步处理，这里需要等待本地channel提交
+	time.Sleep(3 * time.Second)
 
 	/**
 	//UpdateByQuery
@@ -133,31 +135,34 @@ func main() {
 
 	*/
 
-	/*
-		goods := make([]Goods, 0)
-		res, err := esClient.Query(ctx, IndexName, nil, elastic.NewMatchAllQuery(), 0, 20, es.WithEnableDSL(true), es.WithOrders(map[string]bool{"favorites": true}))
-		if err != nil {
-			es.EStdLogger.Print(err)
-		} else {
-			if res != nil {
-				for _, hit := range res.Hits.Hits {
-					g := Goods{}
-					docByte, err := hit.Source.MarshalJSON()
+	goods := make([]Goods, 0)
+	goodsSlince := make([]map[string]bool, 0)
+	goodsSlince = append(goodsSlince, map[string]bool{"favorites": true})
+
+	res, err := esClient.Query(ctx, IndexName, nil, elastic.NewMatchAllQuery(), 0, 20, es.WithEnableDSL(true),
+		es.WithOrders(goodsSlince))
+	if err != nil {
+		es.EStdLogger.Print(err)
+	} else {
+		if res != nil {
+			for _, hit := range res.Hits.Hits {
+				g := Goods{}
+				docByte, err := hit.Source.MarshalJSON()
+				if err != nil {
+					es.EStdLogger.Print(err)
+				} else {
+					err = json.Unmarshal(docByte, &g)
 					if err != nil {
 						es.EStdLogger.Print(err)
 					} else {
-						err = json.Unmarshal(docByte, &g)
-						if err != nil {
-							es.EStdLogger.Print(err)
-						} else {
-							goods = append(goods, g)
-						}
+						goods = append(goods, g)
 					}
 				}
 			}
-
 		}
 
-		es.EStdLogger.Printf("%+v", goods)
-	*/
+	}
+
+	es.EStdLogger.Printf("%+v", goods)
+
 }

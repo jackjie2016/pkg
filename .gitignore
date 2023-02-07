@@ -16,3 +16,4 @@ nosql/test/mongodb/*
 # Dependency directories (remove the comment below to include it)
 # vendor/
 .github
+/es/test/

@@ -25,7 +25,7 @@ func TestGet(t *testing.T) {
 		t.Errorf("MarshalJsonAndGzip err %v", err)
 	}
 	opts := &redis.Options{
-		Addr: "127.0.0.1:6379",
+		Addr: "127.0.0.1:6380",
 	}
 	err = InitRedis(DefaultRedisClient, opts, nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func TestGet(t *testing.T) {
 
 func TestBitOp(t *testing.T) {
 	opts := &redis.Options{
-		Addr: "127.0.0.1:6379",
+		Addr: "127.0.0.1:6380",
 	}
 	//op计算后的结果集
 	key := "dest-bit"
@@ -60,6 +60,10 @@ func TestBitOp(t *testing.T) {
 		t.Errorf("InitRedis err %v", err)
 	}
 	redisClient := GetRedisClient(DefaultRedisClient)
+	err = redisClient.Set("test", 222, time.Second*3)
+	if err != nil {
+		t.Errorf("set err %v", err)
+	}
 	redisClient.SetBitNOBucket(key1, 0, 1)
 	redisClient.SetBitNOBucket(key1, 1, 1)
 	redisClient.SetBitNOBucket(key2, 0, 1)

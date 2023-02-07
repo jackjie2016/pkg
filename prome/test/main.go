@@ -30,7 +30,7 @@ var (
 )
 
 func main() {
-	url := "192.168.1.3:9091"
+	url := "192.168.1.107:9091"
 	prome.InitPromethues(url, 2*time.Second, "test", httpclient.DefaultClient, Counter, Histogram)
 
 	go testHistogram()
