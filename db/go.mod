@@ -1,6 +1,6 @@
 module github.com/jackjie2016/pkg/db
 
-go 1.16
+go 1.19
 
 require (
 	github.com/jackjie2016/pkg/errors v0.0.0-20220305150109-4dedf954f7fb

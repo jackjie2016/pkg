@@ -1,6 +1,6 @@
 module github.com/jackjie2016/pkg/cache
 
-go 1.16
+go 1.19
 
 require (
 	github.com/jackjie2016/pkg/compression v0.0.0-20220618104807-a5734429599c

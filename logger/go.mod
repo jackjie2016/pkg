@@ -1,6 +1,6 @@
 module github.com/jackjie2016/pkg/logger
 
-go 1.16
+go 1.19
 
 require (
 	github.com/BurntSushi/toml v1.0.0 // indirect

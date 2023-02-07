@@ -1,6 +1,6 @@
 module github.com/jackjie2016/pkg/httpclient
 
-go 1.16
+go 1.19
 
 require (
 	github.com/jackjie2016/pkg/errors v0.0.0-20220305143416-e5471e262040

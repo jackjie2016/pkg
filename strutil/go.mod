@@ -1,3 +1,3 @@
 module github.com/jackjie2016/pkg/strutil
 
-go 1.16
+go 1.19

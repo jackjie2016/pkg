@@ -1,6 +1,6 @@
 module github.com/jackjie2016/pkg/prome
 
-go 1.16
+go 1.19
 
 require (
 	github.com/jackjie2016/pkg/httpclient v0.0.0-20220619024357-ff31f996a43f
