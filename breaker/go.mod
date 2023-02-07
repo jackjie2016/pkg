@@ -1,4 +1,4 @@
-module gitee.com/phper95/pkg/breaker
+module github.com/jackjie2016/pkg/breaker
 
 go 1.16
 

@@ -1,9 +1,9 @@
-module github.com/jackjie2016/pkg
+module github.com/jackjie2016/pkg/mq
 
 go 1.19
 
 require (
-	gitee.com/phper95/pkg/logger v0.0.0-20220605100829-4a70f3b0539a
+	github.com/jackjie2016/pkg/logger v0.0.0-20220605100829-4a70f3b0539a
 	github.com/Shopify/sarama v1.19.0
 	github.com/Shopify/toxiproxy v2.1.4+incompatible // indirect
 	github.com/bsm/sarama-cluster v2.1.15+incompatible

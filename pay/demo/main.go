@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"gitee.com/phper95/pkg/pay"
-	"gitee.com/phper95/pkg/pay/client"
-	"gitee.com/phper95/pkg/pay/common"
-	"gitee.com/phper95/pkg/pay/constant"
+	"github.com/jackjie2016/pkg/pay"
+	"github.com/jackjie2016/pkg/pay/client"
+	"github.com/jackjie2016/pkg/pay/common"
+	"github.com/jackjie2016/pkg/pay/constant"
 	"net/http"
 )
 

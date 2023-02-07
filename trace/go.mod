@@ -1,4 +1,4 @@
-module gitee.com/phper95/pkg/trace
+module github.com/jackjie2016/pkg/trace
 
 go 1.16
 

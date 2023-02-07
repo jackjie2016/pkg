@@ -1,3 +1,3 @@
-module gitee.com/phper95/pkg/strutil
+module github.com/jackjie2016/pkg/strutil
 
 go 1.16

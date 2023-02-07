@@ -1,4 +1,4 @@
-module gitee.com/phper95/pkg/nosql
+module github.com/jackjie2016/pkg/nosql
 
 go 1.16
 

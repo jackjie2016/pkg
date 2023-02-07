@@ -1,7 +1,7 @@
 package httpclient
 
 import (
-	"gitee.com/phper95/pkg/trace"
+	"github.com/jackjie2016/pkg/trace"
 	"go.uber.org/zap"
 	"sync"
 	"time"

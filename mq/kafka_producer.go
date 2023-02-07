@@ -1,9 +1,9 @@
 package mq
 
 import (
-	"gitee.com/phper95/pkg/logger"
 	"github.com/Shopify/sarama"
 	"github.com/eapache/go-resiliency/breaker"
+	"github.com/jackjie2016/pkg/logger"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"log"
@@ -31,13 +31,13 @@ type KafkaMsg struct {
 	DataBytes []byte
 }
 
-//同步生产者
+// 同步生产者
 type SyncProducer struct {
 	KafkaProducer
 	SyncProducer *sarama.SyncProducer
 }
 
-//异步生产者
+// 异步生产者
 type AsyncProducer struct {
 	KafkaProducer
 	AsyncProducer *sarama.AsyncProducer
@@ -79,7 +79,7 @@ func KafkaMsgValueStrEncoder(value string) sarama.Encoder {
 	return sarama.StringEncoder(value)
 }
 
-//kafka默认生产者配置
+// kafka默认生产者配置
 func getDefaultProducerConfig(clientID string) (config *sarama.Config) {
 	config = sarama.NewConfig()
 	config.ClientID = clientID
@@ -137,7 +137,7 @@ func InitSyncKafkaProducer(name string, hosts []string, config *sarama.Config) e
 	return nil
 }
 
-//初始化异步生产者
+// 初始化异步生产者
 func InitAsyncKafkaProducer(name string, hosts []string, config *sarama.Config) error {
 	asyncProducer := &AsyncProducer{}
 	asyncProducer.Name = name
@@ -183,7 +183,7 @@ func GetKafkaAsyncProducer(name string) *AsyncProducer {
 	}
 }
 
-//检查同步生产者的连接状态,如果断开链接则尝试重连
+// 检查同步生产者的连接状态,如果断开链接则尝试重连
 func (syncProducer *SyncProducer) keepConnect() {
 	defer func() {
 		KafkaStdLogger.Println("syncProducer keepConnect exited")
@@ -243,7 +243,7 @@ func (syncProducer *SyncProducer) keepConnect() {
 	}
 }
 
-//同步生产者状态检测
+// 同步生产者状态检测
 func (syncProducer *SyncProducer) check() {
 	defer func() {
 		KafkaStdLogger.Println("syncProducer check exited")
@@ -272,7 +272,7 @@ func (syncProducer *SyncProducer) check() {
 	}
 }
 
-//SendMsgs 同步发送消息到 kafka
+// SendMsgs 同步发送消息到 kafka
 func (syncProducer *SyncProducer) SendMessages(mses []*sarama.ProducerMessage) (errs sarama.ProducerErrors) {
 	if syncProducer.Status != KafkaProducerConnected {
 		return append(errs, &sarama.ProducerError{Err: errors.New("kafka syncProducer " + syncProducer.Status)})
@@ -292,7 +292,7 @@ func (syncProducer *SyncProducer) SendMessages(mses []*sarama.ProducerMessage) (
 	return
 }
 
-//SendMsg 同步发送消息到 kafka
+// SendMsg 同步发送消息到 kafka
 func (syncProducer *SyncProducer) Send(msg *sarama.ProducerMessage) (partition int32, offset int64, err error) {
 	if syncProducer.Status != KafkaProducerConnected {
 		return -1, -1, errors.New("kafka syncProducer " + syncProducer.Status)
@@ -312,7 +312,7 @@ func (syncProducer *SyncProducer) Send(msg *sarama.ProducerMessage) (partition i
 	return
 }
 
-//检查kafka连接状态,如果断开链接则尝试重连
+// 检查kafka连接状态,如果断开链接则尝试重连
 func (asyncProducer *AsyncProducer) keepConnect() {
 	defer func() {
 		KafkaStdLogger.Println("asyncProducer keepConnect exited")
@@ -377,7 +377,7 @@ func (asyncProducer *AsyncProducer) keepConnect() {
 	}
 }
 
-//异步生产者状态检测
+// 异步生产者状态检测
 func (asyncProducer *AsyncProducer) check() {
 	defer func() {
 		KafkaStdLogger.Println("asyncProducer check exited")
@@ -424,7 +424,7 @@ func (asyncProducer *AsyncProducer) check() {
 	}
 }
 
-//SendMsg 同步发送消息到 kafka
+// SendMsg 同步发送消息到 kafka
 func (asyncProducer *AsyncProducer) Send(msg *sarama.ProducerMessage) error {
 	var err error
 	if asyncProducer.Status != KafkaProducerConnected {

@@ -1,7 +1,7 @@
 package mq
 
 import (
-	"gitee.com/phper95/pkg/logger"
+	"github.com/jackjie2016/pkg/logger"
 	"github.com/pkg/errors"
 	"go.uber.org/zap"
 	"os"
@@ -36,10 +36,10 @@ type Consumer struct {
 	exit       bool
 }
 
-//KafkaMessageHandler  消费者回调函数
+// KafkaMessageHandler  消费者回调函数
 type KafkaMessageHandler func(message *sarama.ConsumerMessage) (bool, error)
 
-//kafka 消费者配置
+// kafka 消费者配置
 func getKafkaDefaultConsumerConfig() (config *cluster.Config) {
 	config = cluster.NewConfig()
 	config.Consumer.Return.Errors = true
@@ -59,7 +59,7 @@ func getKafkaDefaultConsumerConfig() (config *cluster.Config) {
 	return
 }
 
-//启动消费者
+// 启动消费者
 func StartKafkaConsumer(hosts, topics []string, groupID string, config *cluster.Config, f KafkaMessageHandler) (*Consumer, error) {
 	var err error
 	if config == nil {
@@ -98,7 +98,7 @@ func (c *Consumer) Close() error {
 
 }
 
-//检查kafka连接状态,如果断开链接则尝试重连
+// 检查kafka连接状态,如果断开链接则尝试重连
 func (c *Consumer) keepConnect() {
 	for !c.exit {
 		select {
@@ -143,7 +143,7 @@ func (c *Consumer) keepConnect() {
 	}
 }
 
-//消费消息
+// 消费消息
 func (c *Consumer) consumerMessage(f KafkaMessageHandler) {
 	//在消费者未和 kafka 建立连接时，不消费 kafka 数据
 	for !c.exit {

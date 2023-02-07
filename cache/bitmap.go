@@ -2,9 +2,9 @@ package cache
 
 import (
 	"fmt"
-	"gitee.com/phper95/pkg/errors"
-	"gitee.com/phper95/pkg/timeutil"
 	"github.com/go-redis/redis/v7"
+	"github.com/jackjie2016/pkg/errors"
+	"github.com/jackjie2016/pkg/timeutil"
 	"go.uber.org/zap"
 	"strings"
 	"time"
@@ -12,18 +12,18 @@ import (
 
 //对于超出redis bitmap范围的数据我们使用高49位作捅，低15为作offset
 
-//高49位作捅，低15为作offset
+// 高49位作捅，低15为作offset
 func GetBigBucket(ID int64) int64 {
 	return ID >> 15
 }
 
-//0x7FFF的二进制为111111111111111
-//与ID做与运算结果保留了ID的低15位
+// 0x7FFF的二进制为111111111111111
+// 与ID做与运算结果保留了ID的低15位
 func GetBigOffset(ID int64) int64 {
 	return ID & 0x7FFF
 }
 
-//对于redis bitmap范围内的数据，使用高16位作捅，低16位作offset
+// 对于redis bitmap范围内的数据，使用高16位作捅，低16位作offset
 func GetBucket(userID int64) int64 {
 	return userID >> 16
 }

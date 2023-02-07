@@ -1,4 +1,4 @@
-module gitee.com/phper95/pkg/logger
+module github.com/jackjie2016/pkg/logger
 
 go 1.16
 

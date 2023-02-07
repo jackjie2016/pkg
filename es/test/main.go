@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"gitee.com/phper95/pkg/es"
+	"github.com/jackjie2016/pkg/es"
 	"github.com/olivere/elastic/v7"
 	"strconv"
 	"time"

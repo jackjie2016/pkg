@@ -1,7 +1,7 @@
 package main
 
 import (
-	"gitee.com/phper95/pkg/nosql"
+	"github.com/jackjie2016/pkg/nosql"
 	"go.mongodb.org/mongo-driver/bson"
 )
 

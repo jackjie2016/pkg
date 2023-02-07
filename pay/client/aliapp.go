@@ -7,7 +7,7 @@ import (
 	"crypto/sha1"
 	"encoding/base64"
 	"fmt"
-	"gitee.com/phper95/pkg/pay/common"
+	"github.com/jackjie2016/pkg/pay/common"
 	"log"
 	"net/url"
 	"sort"

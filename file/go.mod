@@ -1,3 +1,3 @@
-module gitee.com/phper95/pkg/file
+module github.com/jackjie2016/pkg/file
 
 go 1.16

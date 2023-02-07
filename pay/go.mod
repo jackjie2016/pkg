@@ -1,4 +1,4 @@
-module gitee.com/phper95/pkg/pay
+module github.com/jackjie2016/pkg/pay
 
 go 1.16
 

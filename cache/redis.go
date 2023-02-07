@@ -2,9 +2,9 @@ package cache
 
 import (
 	"fmt"
-	"gitee.com/phper95/pkg/errors"
-	"gitee.com/phper95/pkg/timeutil"
-	"gitee.com/phper95/pkg/trace"
+	"github.com/jackjie2016/pkg/errors"
+	"github.com/jackjie2016/pkg/timeutil"
+	"github.com/jackjie2016/pkg/trace"
 
 	redis "github.com/go-redis/redis/v7"
 	"go.uber.org/zap"
