@@ -1,4 +1,4 @@
-module pkg
+module github.com/jackjie2016/pkg
 
 go 1.19
 
