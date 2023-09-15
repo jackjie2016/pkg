@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readconcern"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"go.mongodb.org/mongo-driver/x/bsonx"
+
 	"log"
 	"os"
 	"strings"
@@ -325,24 +325,26 @@ func (client *MgClient) Distinct(db, table string, filter bson.D, distinctField 
 
 // CreateIndex .
 func (client *MgClient) CreateIndex(db, table, key string, uniqueKey bool) error {
-	_, err := client.Database(db).Collection(table).Indexes().CreateOne(getContext(),
-		mongo.IndexModel{
-			Keys:    bsonx.Doc{{key, bsonx.Int32(-1)}},
-			Options: options.Index().SetUnique(uniqueKey),
-		})
+
+	indexModel := mongo.IndexModel{
+		Keys:    bson.M{key: -1},
+		Options: options.Index().SetUnique(uniqueKey),
+	}
+
+	_, err := client.Database(db).Collection(table).Indexes().CreateOne(getContext(), indexModel)
 	return err
 }
 
 // 创建多个索引
 func (client *MgClient) CreateMultiIndex(db, table string, keys []string, uniqueKey bool) error {
 	collection := client.Database(db).Collection(table)
-	doc := bsonx.Doc{}
+	indexKeys := bson.D{}
 	for _, key := range keys {
-		doc = doc.Append(key, bsonx.Int32(-1))
+		indexKeys = append(indexKeys, bson.E{Key: key, Value: -1})
 	}
-	_, err := collection.Indexes().CreateOne(getContext(),
+	_, err := collection.Indexes().CreateOne(context.TODO(),
 		mongo.IndexModel{
-			Keys:    doc,
+			Keys:    indexKeys,
 			Options: options.Index().SetUnique(uniqueKey),
 		})
 
