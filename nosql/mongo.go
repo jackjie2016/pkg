@@ -116,14 +116,14 @@ func (client *MgClient) InsertManyTryBest(db string, table string, docs ...inter
 }
 
 // Upsert doc是bson格式
-func (client *MgClient) Upsert(db string, table string, filter bson.D, doc interface{}) error {
+func (client *MgClient) Upsert(db string, table string, filter interface{}, doc interface{}) error {
 	collection := client.Database(db).Collection(table)
 	//设置Upset模式
 	opts := options.FindOneAndUpdate().SetUpsert(true)
 	return collection.FindOneAndUpdate(getContext(), filter, bson.D{{"$set", doc}}, opts).Err()
 }
 
-func (client *MgClient) ReplaceOne(db string, table string, filter bson.D, doc interface{}) error {
+func (client *MgClient) ReplaceOne(db string, table string, filter interface{}, doc interface{}) error {
 	collection := client.Database(db).Collection(table)
 
 	//设置Replace设置项
@@ -136,7 +136,7 @@ func (client *MgClient) ReplaceOne(db string, table string, filter bson.D, doc i
 // filter := bson.D{{"_id", id}}
 //
 //	update := bson.D{{"email", "newemail@example.com"}}
-func (client *MgClient) UpdateOne(db string, table string, filter bson.D, update interface{}) error {
+func (client *MgClient) UpdateOne(db string, table string, filter interface{}, update interface{}) error {
 	_, err := client.Database(db).Collection(table).UpdateOne(getContext(), filter, bson.M{"$set": update}, nil)
 	return err
 }
@@ -144,12 +144,12 @@ func (client *MgClient) UpdateOne(db string, table string, filter bson.D, update
 // example
 // filter := bson.D{{"birthday", today}}
 // update := bson.D{{"$inc", bson.D{{"age", 1}}}}
-func (client *MgClient) UpdateMany(db string, table string, filter bson.D, update interface{}) error {
+func (client *MgClient) UpdateMany(db string, table string, filter interface{}, update interface{}) error {
 	_, err := client.Database(db).Collection(table).UpdateMany(getContext(), filter, update, nil)
 	return err
 }
 
-func (client *MgClient) Find(db string, table string, filter bson.D, result interface{}) (bool, error) {
+func (client *MgClient) Find(db string, table string, filter interface{}, result interface{}) (bool, error) {
 	//选择数据库和集合
 	var (
 		cursor *mongo.Cursor
